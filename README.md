@@ -109,52 +109,66 @@ print("- saas_user_activity.csv")
 print("- saas_background_jobs.csv")
 print("- saas_users.csv")
 
-Database Schema
+```
+
+## Database Schema
 The project utilizes four tables to represent the SaaS user activity data:
 
-saas_storage:
+**saas_storage:**
 
-customer_id (INTEGER)
-site_id (VARCHAR)
-date (DATE)
-storage_bytes (INTEGER)
-saas_user_activity:
+| Column Name   | Data Type | Description                     |
+|---------------|-----------|---------------------------------|
+| `customer_id` | INTEGER   | Unique identifier for the customer |
+| `site_id`     | VARCHAR   | Identifier for the customer's site |
+| `date`        | DATE      | Date of the storage record        |
+| `storage_bytes`| INTEGER   | Storage used in bytes             |
 
-customer_id (INTEGER)
-user_email (VARCHAR)
-site_id (VARCHAR)
-date (DATE)
-activity_type (VARCHAR)
-event_count (INTEGER)
-saas_background_jobs:
+**saas_user_activity:**
 
-site_id (VARCHAR)
-date (DATE)
-background_job_type (VARCHAR)
-background_job_min (INTEGER)
-saas_users:
+| Column Name   | Data Type | Description                       |
+|---------------|-----------|-----------------------------------|
+| `customer_id` | INTEGER   | Unique identifier for the customer  |
+| `user_email`  | VARCHAR   | Email address of the user         |
+| `site_id`     | VARCHAR   | Identifier for the site of activity |
+| `date`        | DATE      | Date of the activity              |
+| `activity_type`| VARCHAR   | Type of user activity (e.g., Access)|
+| `event_count` | INTEGER   | Number of times the activity occurred |
 
-customer_id (INTEGER)
-user_email (VARCHAR)
-registration_date (DATE)
-Data Analysis (Google BigQuery)
+**saas_background_jobs:**
+
+| Column Name          | Data Type | Description                       |
+|----------------------|-----------|-----------------------------------|
+| `site_id`            | VARCHAR   | Identifier for the site of the job  |
+| `date`               | DATE      | Date of the job execution         |
+| `background_job_type`| VARCHAR   | Type of background job (e.g., extract)|
+| `background_job_min` | INTEGER   | Duration of the job in minutes      |
+
+**saas_users:**
+
+| Column Name       | Data Type | Description                     |
+|-------------------|-----------|---------------------------------|
+| `customer_id`     | INTEGER   | Unique identifier for the customer |
+| `user_email`      | VARCHAR   | Email address of the user         |
+| `registration_date`| DATE      | Date when the user registered      |
+
+## Data Analysis (Google BigQuery)
 The generated CSV files were uploaded to Google BigQuery for scalable storage and in-depth analysis using SQL. The analysis involved:
 
-Aggregating data to a monthly level.
-Joining tables to combine information across different entities.
-Calculating key metrics like storage usage, user activity, active users, and background job performance.
-Filtering out specific background job types for focused analysis.
-Presenting the results in a structured format for insights.
-Detailed documentation of the BigQuery SQL queries and the resulting analysis can be found in README-analysis.md
+* Aggregating data to a monthly level.
+* Joining tables to combine information across different entities.
+* Calculating key metrics like storage usage, user activity, active users, and background job performance.
+* Filtering out specific background job types for focused analysis.
+* Presenting the results in a structured format for insights.
+* Detailed documentation of the BigQuery SQL queries and the resulting analysis can be found in [README-analysis.md](https://github.com/Cath-L/saas-user-analysis/blob/main/README-analysis.md)
 
-Tools Used
-Python: For synthetic data generation.
-Pandas: For data manipulation and export.
-Faker: For generating realistic fake data.
-Google BigQuery: For scalable data storage and analysis.
-SQL: For querying and analyzing the data in BigQuery.
-Google Site Portfolio
-Screenshots and a description of how this project is presented on my Google Site portfolio can be found (https://sites.google.com/view/cathy-leung/home). The Google Site provides a visual overview of the project, including the business context, data schema, key findings from the BigQuery analysis, and links to the code repositories.
+## Tools Used
+* **Python**: For synthetic data generation.
+*  **Pandas**: For data manipulation and export.
+*  **Faker**: For generating realistic fake data.
+*  **Google BigQuery**: For scalable data storage and analysis.
+*  **SQL**: For querying and analyzing the data in BigQuery.
+*  **Google Site Portfolio**
+Screenshots and a description of how this project is presented on my [Google Site portfolio](https://sites.google.com/view/cathy-leung/home). The Google Site provides a visual overview of the project, including the business context, data schema, key findings from the BigQuery analysis, and links to the code repositories.
 
-Conclusion
+## Conclusion
 This project demonstrates my ability to generate realistic data using Python and perform comprehensive data analysis using SQL in Google BigQuery. The end-to-end workflow highlights the process of creating data and then extracting valuable insights for a SaaS platform.
