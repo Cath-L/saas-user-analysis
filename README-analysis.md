@@ -11,12 +11,13 @@ The analysis utilizes the following tables in Google BigQuery (within the `saas-
 * `saas_storage`: Daily storage usage information.
 * `saas_user_activity`: Daily user activity events.
 * `saas_background_jobs`: Information about background job executions.
-* `saas-user-analysis-456519`.saas_user_analysis.`saas-user`: User registration information.
+* `` `saas-user-analysis-456519`.saas_user_analysis.`saas-user` ``: User registration information.
 
 ## SQL Query
 
 The following SQL query was executed in Google BigQuery to perform the analysis:
 
+```sql
 WITH
     MonthlyStorage AS (
         SELECT
@@ -156,49 +157,50 @@ ORDER BY
     site_id,
     `Usage Type`;
 
-    SQL Logic Walkthrough
+```
+
+## SQL Logic Walkthrough
 The SQL query consists of several Common Table Expressions (CTEs) that build upon each other to achieve the final result:
 
-MonthlyStorage:
-
+* **MonthlyStorage**:
 Aggregates the saas_storage table to calculate the average monthly storage in gigabytes for each customer and site.
 Filters out storage entries with zero usage.
-MonthlyActivities:
 
+* **MonthlyActivities**:
 Aggregates the saas_user_activity table to calculate the total monthly activity count for each customer and site.
-Joins with the saas-user-analysis-456519.saas_user_analysis.saas-user table to exclude activities that occurred within the first 30 days after a user's registration date.
+Joins with the `saas-user-analysis-456519`.saas_user_analysis.`saas-user` table to exclude activities that occurred within the first 30 days after a user's registration date.
 The result is cast to an integer.
-LastDayActiveUsers:
 
+* **LastDayActiveUsers**:
 Counts the number of distinct active users for each customer and site on the last day of each month from the saas_user_activity table.
-Joins with the saas-user-analysis-456519.saas_user_analysis.saas-user table to only count users whose activity on the last day of the month was 30 days or more after their registration.
+Joins with the `saas-user-analysis-456519`.saas_user_analysis.`saas-user` table to only count users whose activity on the last day of the month was 30 days or more after their registration.
 The result is cast to an integer.
-AggregatedBackgroundJobs:
 
+* **AggregatedBackgroundJobs**:
 Aggregates the saas_background_jobs table to calculate the average monthly duration of background jobs for each site.
 Excludes background jobs where background_job_type is 'bridge' or 'alert'.
 The result is rounded to one decimal place.
-MonthlyBackgroundJobsWithCustomer:
 
+* **MonthlyBackgroundJobsWithCustomer**:
 Joins the aggregated background job data with the saas_user_activity table on site_id and the month of the date to associate a customer_id with the background job metrics.
-CombinedData:
 
+* **CombinedData**:
 Uses UNION ALL to combine the monthly summaries from all the previous CTEs into a single table.
 Includes columns for month, customer_id, site_id, Usage Type (Storage, Activity, Active User, Background Job), and the corresponding value.
 The final SELECT statement retrieves and orders the data from the CombinedData CTE.
 
-Key Insights and Results
+## Key Insights and Results
 The executed query provides a monthly summary of key SaaS usage metrics at the site level. The results include:
 
-Average Storage Consumption (GB): Shows the average storage used by each customer at each site per month.
-Total User Activities: Indicates the total number of user interactions within each customer and site per month, excluding activities within the first 30 days of registration.
-Number of Active Users: Represents the count of unique users active on the last day of each month for each customer and site, considering only users whose activity occurred 30 days or more after their registration.
-Average Background Job Duration (minutes): Shows the average duration of background jobs (excluding 'bridge' and 'alert' types) per site per month.
+* **Average Storage Consumption (GB)**: Shows the average storage used by each customer at each site per month.
+* **Total User Activities**: Indicates the total number of user interactions within each customer and site per month, excluding activities within the first 30 days of registration.
+* **Number of Active Users**: Represents the count of unique users active on the last day of each month for each customer and site, considering only users whose activity occurred 30 days or more after their registration.
+* **Average Background Job Duration (minutes)**: Shows the average duration of background jobs (excluding 'bridge' and 'alert' types) per site per month.
 
-Tools Used
+## Tools Used
 Google BigQuery
 SQL
 
-Link to Main Project README
-README.md
+## Link to Main Project README
+[README.md](https://github.com/Cath-L/saas-user-analysis/blob/main/README.md)
 
