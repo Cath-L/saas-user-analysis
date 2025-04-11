@@ -146,10 +146,6 @@ Calculating key metrics like storage usage, user activity, active users, and bac
 Filtering out specific background job types for focused analysis.
 Presenting the results in a structured format for insights.
 Detailed documentation of the BigQuery SQL queries and the resulting analysis can be found in README-analysis.md
-.
-
-SQL Queries and Analysis (Examples)
-[You can keep a few of your original example SQL queries here if you want to show the initial exploration, or you can remove this section entirely to keep this README focused on the data generation.]
 
 Tools Used
 Python: For synthetic data generation.
@@ -158,7 +154,7 @@ Faker: For generating realistic fake data.
 Google BigQuery: For scalable data storage and analysis.
 SQL: For querying and analyzing the data in BigQuery.
 Google Site Portfolio
-Screenshots and a description of how this project is presented on my Google Site portfolio can be found [Your Google Site Portfolio Link Here]. The Google Site provides a visual overview of the project, including the business context, data schema, key findings from the BigQuery analysis, and links to the code repositories.
+Screenshots and a description of how this project is presented on my Google Site portfolio can be found (https://sites.google.com/view/cathy-leung/home). The Google Site provides a visual overview of the project, including the business context, data schema, key findings from the BigQuery analysis, and links to the code repositories.
 
 Conclusion
 This project demonstrates my ability to generate realistic data using Python and perform comprehensive data analysis using SQL in Google BigQuery. The end-to-end workflow highlights the process of creating data and then extracting valuable insights for a SaaS platform.
