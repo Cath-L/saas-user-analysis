@@ -198,8 +198,8 @@ The executed query provides a monthly summary of key SaaS usage metrics at the s
 * **Average Background Job Duration (minutes)**: Shows the average duration of background jobs (excluding 'bridge' and 'alert' types) per site per month.
 
 ## Tools Used
-Google BigQuery
-SQL
+* Google BigQuery
+* SQL
 
 ## Link to Main Project README
 [README.md](https://github.com/Cath-L/saas-user-analysis/blob/main/README.md)
