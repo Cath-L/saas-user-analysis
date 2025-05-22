@@ -28,19 +28,19 @@ These six CSVs are expected as inputs (from `01-generate/`):
 
 ## Steps Performed
 
-### 📅 1. Convert to Monthly Format
+### 1. Convert to Monthly Format
 - All date columns are parsed to datetime
 - `month` column is extracted using `.dt.to_period('M')`
 
-### 📦 2. Aggregate by Site/Month
+### 2. Aggregate by Site/Month
 - **Storage usage**: Sum of `storage_bytes`, converted to GB
 - **Background jobs**: Sum of `background_job_min`
 - **Activity**: Sum of `event_count`
 
-### 👥 3. Count Users by License Type
+### 3. Count Users by License Type
 - Viewer, Explorer, Creator breakdown (site-level only)
 
-### 🔁 4. Merge All Tables
+### 4. Merge All Tables
 - Joins are performed using `site_id` and `month`
 - Fills in missing values for storage and jobs as `0`
 - Metadata fields are joined from `sites` and `customers`
