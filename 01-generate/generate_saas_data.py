@@ -1,17 +1,15 @@
 import pandas as pd
 import random
 from datetime import datetime
+from faker import Faker
 
-# Initialize Faker
 fake = Faker()
 
-# --- Configuration ---
 num_customers = 65
 start_date = datetime(2023, 1, 1)
 end_date = datetime(2024, 12, 31)
 date_range = pd.date_range(start=start_date, end=end_date, freq='D')
 
-# Fixed lists
 industries = [
     "Technology", "Finance", "Healthcare", "Retail", "Education",
     "Manufacturing", "Transportation & Logistics", "Media & Entertainment",
@@ -84,7 +82,7 @@ for customer_id in customer_info_df['customer_id']:
     for _ in range(num_unique_users):
         username = fake.user_name()
         user_email = f"{username}@{fake.domain_name()}{domain}"
-        registration_date = fake.date_between(start_date='-2y', pd.Timedelta(days=1))
+        registration_date = fake.date_between(start_date=start_date, end_date=end_date)
         license_type = random.choice(['Viewer', 'Explorer', 'Creator'])
         user_pool.append({
             'customer_id': customer_id,
@@ -143,7 +141,6 @@ for _, row in site_df.iterrows():
             })
 background_job_df = pd.DataFrame(background_job_data)
 
-# --- Output CSVs ---
 customer_info_df.to_csv('saas_customer_info.csv', index=False)
 site_df.to_csv('saas_sites.csv', index=False)
 storage_df.to_csv('saas_storage.csv', index=False)
@@ -151,7 +148,6 @@ users_df.to_csv('saas_users.csv', index=False)
 activity_counts_df.to_csv('saas_user_activity.csv', index=False)
 background_job_df.to_csv('saas_background_jobs.csv', index=False)
 
-# --- Summary of Generated Categories ---
 print(" Synthetic SaaS data saved. Files:")
 print("- saas_customer_info.csv")
 print("- saas_sites.csv")
@@ -159,7 +155,6 @@ print("- saas_storage.csv")
 print("- saas_users.csv")
 print("- saas_user_activity.csv")
 print("- saas_background_jobs.csv")
-
 print("\n Sample Activity Types:", activity_types)
 print(" Sample Background Job Types:", background_job_types)
 print(" Internal Customer IDs:", internal_accounts)
