@@ -41,44 +41,62 @@ Each file simulates realistic activity patterns and relationships among entities
 
 ## 🗂️ Database Schema Summary
 
-### `saas_storage.csv`
+**`saas_customer_info.csv`**
 
-| Column | Type | Description |
-|--------|------|-------------|
-| `customer_id` | STRING | Customer ID |
-| `site_id` | STRING | Site ID |
-| `date` | DATE | Daily timestamp |
-| `storage_bytes` | INTEGER | Bytes stored |
+| Column         | Type   | Description                                  |
+|----------------|--------|----------------------------------------------|
+| `customer_id`  | STRING | Unique 10-digit customer ID                  |
+| `industry`     | STRING | Industry type (e.g., Finance, Healthcare)   |
+| `region`       | STRING | Region (North America, EMEA, APAC)          |
+| `account_tier` | STRING | Commercial, SMB, or Enterprise              |
+| `contact_email`| STRING | Customer contact email address              |
 
-### `saas_user_activity.csv`
+**`saas_sites.csv`**
 
-| Column | Type | Description |
-|--------|------|-------------|
-| `customer_id` | STRING | Customer ID |
-| `user_email` | STRING | User identifier |
-| `site_id` | STRING | Site of activity |
-| `date` | DATE | Activity date |
-| `activity_type` | STRING | Type of event (e.g. Access, Create) |
-| `event_count` | INTEGER | Count per activity type |
+| Column        | Type   | Description                              |
+|---------------|--------|------------------------------------------|
+| `site_id`     | STRING | Unique 12-digit alphanumeric site ID    |
+| `customer_id` | STRING | Customer ID linked to this site         |
 
-### `saas_background_jobs.csv`
+**`saas_storage.csv`**
 
-| Column | Type | Description |
-|--------|------|-------------|
-| `site_id` | STRING | Site ID |
-| `date` | DATE | Execution date |
-| `background_job_type` | STRING | Job category (e.g. flow run, alert) |
-| `background_job_min` | INTEGER | Duration in minutes |
+| Column         | Type   | Description                           |
+|----------------|--------|---------------------------------------|
+| `customer_id`  | STRING | Customer ID                           |
+| `site_id`      | STRING | Site ID                               |
+| `date`         | DATE   | Daily timestamp                       |
+| `storage_bytes`| INTEGER| Amount of storage used (in bytes)     |
 
-### `saas_users.csv`
+**`saas_users.csv`**
 
-| Column | Type | Description |
-|--------|------|-------------|
-| `customer_id` | STRING | Customer ID |
-| `site_id` | STRING | Site ID |
-| `user_email` | STRING | User email |
-| `registration_date` | DATE | Registration date |
-| `license_type` | STRING | Viewer / Explorer / Creator |
+| Column             | Type   | Description                                  |
+|--------------------|--------|----------------------------------------------|
+| `customer_id`      | STRING | Customer ID                                  |
+| `site_id`          | STRING | Site ID where user is assigned               |
+| `user_email`       | STRING | User email address                           |
+| `registration_date`| DATE   | Date of user registration                    |
+| `license_type`     | STRING | License type (Viewer, Explorer, Creator)     |
+
+**`saas_user_activity.csv`**
+
+| Column         | Type   | Description                                  |
+|----------------|--------|----------------------------------------------|
+| `customer_id`  | STRING | Customer ID                                  |
+| `user_email`   | STRING | User identifier                              |
+| `site_id`      | STRING | Site where activity occurred                 |
+| `date`         | DATE   | Date of the activity                         |
+| `activity_type`| STRING | Access, Create, View, or Publish             |
+| `event_count`  | INTEGER| Number of times the activity occurred        |
+
+**`saas_background_jobs.csv`**
+
+| Column              | Type   | Description                                 |
+|---------------------|--------|---------------------------------------------|
+| `customer_id`       | STRING | Customer ID                                 |
+| `site_id`           | STRING | Site ID                                     |
+| `date`              | DATE   | Execution date                              |
+| `background_job_type`| STRING| Job category (e.g. flow run, alert)         |
+| `background_job_min`| INTEGER| Duration of the job in minutes              |
 
 ---
 
