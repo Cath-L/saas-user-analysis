@@ -1,76 +1,73 @@
 # 02 – Build Monthly Summary
 
 ## Overview
-This step takes the six raw data tables generated in Step 01 and merges them into a unified, analysis-ready dataset called `monthly_site_summary.csv`.
+This step takes the six raw data tables generated in **Step 01** and merges them into a unified, analysis-ready dataset called **`monthly_site_summary.csv`**.
 
 The final dataset includes:
-- Monthly user activity per site
-- Total storage used (in GB)
-- Total background job minutes
-- License type breakdown per site
-- Customer metadata (region, industry, tier)
+- **Monthly user activity** per site (`activity_events`)
+- **Total storage used (GB)** per site (`storage_gb`)
+- **Total background job minutes** per site (`background_job_min`)
+- **License type breakdown** per site (View-Only, Standard, Power Users)
+- **Customer & site metadata** (region, industry, tier, lifecycle dates)
 
-This unified summary supports executive dashboards, onboarding cohort tracking, and GPT-powered segment summaries.
+This summary supports executive dashboards, onboarding cohort tracking, and GPT-powered segment summaries.
 
 ---
 
-## Input Files
-These six CSVs are expected as inputs (from `01-generate/`):
-
-- `saas_customer_info.csv`  
-- `saas_sites.csv`  
-- `saas_storage.csv`  
-- `saas_users.csv`  
-- `saas_user_activity.csv`  
+## Inputs (from `01-generate/`)
+- `saas_customer_info.csv`
+- `saas_sites.csv`
+- `saas_storage.csv`
+- `saas_users.csv`
+- `saas_user_activity.csv`
 - `saas_background_jobs.csv`
 
 ---
 
-## Steps Performed
+## What the Script Does
 
-### 1. Convert to Monthly Format
-- All date columns are parsed to datetime
-- `month` column is extracted using `.dt.to_period('M')`
+### 1) Parse dates & extract month
+- Parses `date` in **storage**, **activity**, and **jobs**
+- Creates a **`month`** column using `dt.to_period('M')`
 
-### 2. Aggregate by Site/Month
-- **Storage usage**: Sum of `storage_bytes`, converted to GB
-- **Background jobs**: Sum of `background_job_min`
-- **Activity**: Sum of `event_count`
+### 2) Aggregate to site × month
+- **Activity**: sum of `event_count` → `activity_events`
+- **Storage**: sum of `storage_bytes`, convert to GB → `storage_gb`
+- **Background jobs**: sum of `background_job_min`
 
-### 3. Count Users by License Type
-- Viewer, Explorer, Creator breakdown (site-level only)
+### 3) Users by license (site-level)
+Renames license buckets and counts users per site:
+- `Viewer` → **View-Only Users**
+- `Explorer` → **Standard Users**
+- `Creator` → **Power Users**
 
-### 4. Merge All Tables
-- Joins are performed using `site_id` and `month`
-- Fills in missing values for storage and jobs as `0`
-- Metadata fields are joined from `sites` and `customers`
+Ensures all three columns exist even if zero.
+
+### 4) Merge everything
+- Outer-merges monthly aggregates on `site_id` + `month`
+- Fills missing metrics with `0`
+- Joins **site** and **customer** metadata (incl. `purchase_date`, `active_date`, `is_internal`)
+- Adds helpful timestamps: **`month_start`** and **`month_end`**
 
 ---
 
 ## Output
+- **File:** `monthly_site_summary.csv`
+- **Location:** same folder as the script
 
-The result is saved as: monthly_site_summary.csv
+### Expected Columns (excerpt)
+- Keys: `site_id`, `month`, `month_start`, `month_end`
+- Metrics: `activity_events`, `storage_gb`, `background_job_min`
+- License breakdown: `View-Only Users`, `Standard Users`, `Power Users`
+- Metadata: `customer_id`, `industry`, `region`, `account_tier`, `purchase_date`, `active_date`, `is_internal`
 
-
-This file includes:
-- `site_id`, `month`
-- `event_count`, `storage_gb`, `background_job_min`
-- License breakdown (Viewer, Explorer, Creator)
-- `customer_id`, `region`, `industry`, `account_tier`
+> Note: License counts are **site-level (static)**, not month-aware.
 
 ---
 
-## Run This Script
+## How to Run
 
-If you're in the `/02-unify/` folder, run:
+From the `02-unify/` directory (or adjust paths accordingly):
 
 ```bash
 python build_monthly_summary.py
-
-Output file: monthly_site_summary.csv
-Output location: saved to the same folder
-
-## Notes
-
-The aggregation assumes month is the granularity for tracking SaaS engagement
-User license counts are static (based on last month of activity)
